@@ -1292,5 +1292,151 @@
       "bookmarked": false,
       "bestDay": "Mar 27"
     }
+  ],
+  "photos": [
+    {
+      "name": "Shibuya Scramble Crossing",
+      "area": "Shibuya",
+      "bestDay": "Mar 25",
+      "bestTime": "Afternoon/Evening",
+      "note": "Street level + Starbucks Tsutaya view + Mag's Park rooftop (free!)",
+      "bookmarked": true
+    },
+    {
+      "name": "SHIBUYA SKY",
+      "area": "Shibuya",
+      "bestDay": "Mar 25",
+      "bestTime": "Sunset",
+      "note": "Observation deck. Timed entry.",
+      "bookmarked": true
+    },
+    {
+      "name": "Shibuya Hikarie Sky Lobby (FREE!)",
+      "area": "Shibuya",
+      "bestDay": "Mar 25",
+      "bestTime": "Anytime",
+      "note": "11F free viewpoint.",
+      "bookmarked": true
+    },
+    {
+      "name": "Omoide Yokocho at night",
+      "area": "Shinjuku",
+      "bestDay": "Mar 24",
+      "bestTime": "After sunset",
+      "note": "Lantern-lit yakitori alleys.",
+      "bookmarked": true
+    },
+    {
+      "name": "Golden-Gai + Kabukicho",
+      "area": "Shinjuku",
+      "bestDay": "Mar 24",
+      "bestTime": "Night",
+      "note": "Neon signs, tiny bar alleys.",
+      "bookmarked": true
+    },
+    {
+      "name": "Dogenzaka",
+      "area": "Shibuya",
+      "bestDay": "Mar 25",
+      "bestTime": "Evening",
+      "note": "Neon streets.",
+      "bookmarked": true
+    },
+    {
+      "name": "Sensō-ji at dusk",
+      "area": "Asakusa",
+      "bestDay": "Mar 27",
+      "bestTime": "Dusk",
+      "note": "Lit-up pagoda, fewer crowds.",
+      "bookmarked": true
+    },
+    {
+      "name": "Tsukiji Market",
+      "area": "Tsukiji",
+      "bestDay": "Mar 28",
+      "bestTime": "Morning",
+      "note": "Bustling market atmosphere.",
+      "bookmarked": true
+    },
+    {
+      "name": "Hōkanji Pagoda (Yasaka-no-Tou)",
+      "area": "Higashiyama",
+      "bestDay": "Mar 30",
+      "bestTime": "Afternoon",
+      "note": "Iconic Kyoto pagoda on Ninenzaka.",
+      "bookmarked": true
+    },
+    {
+      "name": "Yasaka Shrine",
+      "area": "Gion",
+      "bestDay": "Mar 30",
+      "bestTime": "Kimono day",
+      "note": "Beautiful with kimono.",
+      "bookmarked": true
+    },
+    {
+      "name": "Fushimi Inari torii gates",
+      "area": "Fushimi",
+      "bestDay": "Apr 2",
+      "bestTime": "Before 9am",
+      "note": "Best early — fewer crowds.",
+      "bookmarked": true
+    },
+    {
+      "name": "Arashiyama Bamboo Grove",
+      "area": "Arashiyama",
+      "bestDay": "Mar 31",
+      "bestTime": "Early AM",
+      "note": "Magical light through bamboo.",
+      "bookmarked": false
+    },
+    {
+      "name": "Philosopher's Path",
+      "area": "Higashiyama",
+      "bestDay": "Apr 3",
+      "bestTime": "Morning",
+      "note": "Cherry blossom lined canal.",
+      "bookmarked": false
+    },
+    {
+      "name": "teamLab Planets",
+      "area": "Toyosu",
+      "bestDay": "Mar 26",
+      "bestTime": "Noon reservation",
+      "note": "Highly photogenic.",
+      "bookmarked": true
+    },
+    {
+      "name": "teamLab Borderless MORI",
+      "area": "Azabudai",
+      "bestDay": "Flex",
+      "bestTime": "Anytime",
+      "note": "Separate from Planets. Immersive digital art.",
+      "bookmarked": true
+    },
+    {
+      "name": "Kadokawa Musashino Museum",
+      "area": "Tokorozawa",
+      "bestDay": "Flex",
+      "bestTime": "Daytime",
+      "note": "Stunning rock architecture. Detour needed.",
+      "bookmarked": true
+    },
+    {
+      "name": "Kinkaku-ji (Golden Pavilion)",
+      "area": "Kyoto",
+      "bestDay": "Apr 1",
+      "bestTime": "Morning",
+      "note": "Iconic golden temple reflecting in pond.",
+      "bookmarked": false
+    },
+    {
+      "name": "Tobu Bridge view of Skytree",
+      "area": "Asakusa",
+      "bestDay": "Mar 27",
+      "bestTime": "Evening",
+      "note": "Classic Skytree + river shot.",
+      "bookmarked": true
+    }
   ]
 }

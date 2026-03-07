@@ -2335,7 +2335,7 @@ showTab = function(id) {
 
 <script>
 // =============================================
-// DATA-DRIVEN DIRECTORY OVERRIDE (places.json + in-page add form)
+// DATA-DRIVEN DIRECTORY OVERRIDE (places.json + add by link/name)
 // =============================================
 (function () {
   const PLACE_FILE = './data/places.json';
@@ -2343,13 +2343,14 @@ showTab = function(id) {
   const SECTION_CONFIG = {
     restaurants: { tabId: 'restaurants', containerId: 'rest-grid', label: 'Restaurant', accent: '#c9a84c' },
     cafes: { tabId: 'coffee', containerId: 'coffee-grid', label: 'Cafe', accent: '#6b4226' },
-    shops: { tabId: 'shops', containerId: 'shops-grid', label: 'Shop', accent: '#c2185b' }
+    shops: { tabId: 'shops', containerId: 'shops-grid', label: 'Shop', accent: '#c2185b' },
+    photos: { tabId: 'photos', containerId: 'photos-grid', label: 'Photo Spot', accent: '#7030a0' }
   };
 
   const state = {
-    base: { restaurants: [], cafes: [], shops: [] },
+    base: { restaurants: [], cafes: [], shops: [], photos: [] },
     custom: loadCustom(),
-    merged: { restaurants: [], cafes: [], shops: [] }
+    merged: { restaurants: [], cafes: [], shops: [], photos: [] }
   };
 
   function esc(value) {
@@ -2366,10 +2367,11 @@ showTab = function(id) {
       return {
         restaurants: Array.isArray(parsed.restaurants) ? parsed.restaurants : [],
         cafes: Array.isArray(parsed.cafes) ? parsed.cafes : [],
-        shops: Array.isArray(parsed.shops) ? parsed.shops : []
+        shops: Array.isArray(parsed.shops) ? parsed.shops : [],
+        photos: Array.isArray(parsed.photos) ? parsed.photos : []
       };
     } catch (err) {
-      return { restaurants: [], cafes: [], shops: [] };
+      return { restaurants: [], cafes: [], shops: [], photos: [] };
     }
   }
 
@@ -2422,6 +2424,7 @@ showTab = function(id) {
     renderSection('restaurants');
     renderSection('cafes');
     renderSection('shops');
+    renderSection('photos');
   }
 
   function ensureControls() {
@@ -2432,7 +2435,7 @@ showTab = function(id) {
       bar.setAttribute('data-dynamic-controls', 'true');
       bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px';
       bar.innerHTML = `
-        <button style="background:var(--ink);color:#fff;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-size:12px" data-add="${type}">+ Add ${cfg.label}</button>
+        <button style="background:var(--ink);color:#fff;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-size:12px" data-add="${type}">+ Add ${cfg.label} (Link/Name)</button>
         <button style="background:#fff;border:1px solid #ddd;padding:8px 12px;border-radius:10px;cursor:pointer;font-size:12px" data-download="${type}">Download custom ${type}.json</button>`;
       section.insertBefore(bar, section.children[1] || null);
       bar.querySelector(`[data-add="${type}"]`).addEventListener('click', () => openModal(type));
@@ -2447,49 +2450,38 @@ showTab = function(id) {
     modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:9999;padding:14px';
     modal.innerHTML = `
       <div style="width:min(680px,96vw);max-height:92vh;overflow:auto;background:#fff;border-radius:14px;padding:16px">
-        <h3 style="margin:0 0 10px;font-family:Playfair Display,serif">Add Place</h3>
+        <h3 style="margin:0 0 10px;font-family:Playfair Display,serif">Add by Google Maps Link or Name</h3>
         <form id="placeForm" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
           <label style="display:flex;flex-direction:column;font-size:12px">Type
-            <select name="type" required><option value="restaurants">Restaurant</option><option value="cafes">Cafe</option><option value="shops">Shop</option></select>
+            <select name="type" required>
+              <option value="restaurants">Restaurant</option>
+              <option value="cafes">Cafe</option>
+              <option value="shops">Shop</option>
+              <option value="photos">Photo Spot</option>
+            </select>
           </label>
-          <label style="display:flex;flex-direction:column;font-size:12px">Name
-            <input name="name" required style="padding:8px;border:1px solid #ddd;border-radius:8px">
+          <label style="display:flex;flex-direction:column;font-size:12px">Google Maps URL or Place Name
+            <input name="query" required placeholder="https://maps.google.com/... or Udon Shin Shinjuku" style="padding:8px;border:1px solid #ddd;border-radius:8px">
           </label>
-          <label style="display:flex;flex-direction:column;font-size:12px">City
-            <input name="city" style="padding:8px;border:1px solid #ddd;border-radius:8px">
+          <label style="display:flex;flex-direction:column;font-size:12px">Best Day (optional)
+            <input name="bestDay" placeholder="Mar 27" style="padding:8px;border:1px solid #ddd;border-radius:8px">
           </label>
-          <label style="display:flex;flex-direction:column;font-size:12px">Area
-            <input name="area" style="padding:8px;border:1px solid #ddd;border-radius:8px">
-          </label>
-          <label style="display:flex;flex-direction:column;font-size:12px">Category
-            <input name="cat" style="padding:8px;border:1px solid #ddd;border-radius:8px">
-          </label>
-          <label style="display:flex;flex-direction:column;font-size:12px">Rating
-            <input name="rating" style="padding:8px;border:1px solid #ddd;border-radius:8px">
-          </label>
-          <label style="display:flex;flex-direction:column;font-size:12px">Price
-            <input name="price" style="padding:8px;border:1px solid #ddd;border-radius:8px">
-          </label>
-          <label style="display:flex;flex-direction:column;font-size:12px">Map URL
-            <input name="mapUrl" style="padding:8px;border:1px solid #ddd;border-radius:8px">
-          </label>
-          <label style="display:flex;flex-direction:column;font-size:12px">Best Day
-            <input name="bestDay" style="padding:8px;border:1px solid #ddd;border-radius:8px">
-          </label>
-          <label style="display:flex;flex-direction:column;font-size:12px">Best Time
-            <input name="bestTime" style="padding:8px;border:1px solid #ddd;border-radius:8px">
+          <label style="display:flex;flex-direction:column;font-size:12px">Best Time (optional)
+            <input name="bestTime" placeholder="Sunset / Morning" style="padding:8px;border:1px solid #ddd;border-radius:8px">
           </label>
           <label style="grid-column:1/-1;display:flex;flex-direction:column;font-size:12px">Notes
-            <textarea name="note" rows="3" style="padding:8px;border:1px solid #ddd;border-radius:8px"></textarea>
+            <textarea name="note" rows="3" placeholder="Optional override notes..." style="padding:8px;border:1px solid #ddd;border-radius:8px"></textarea>
           </label>
+          <div id="placeStatus" style="grid-column:1/-1;font-size:12px;color:#666"></div>
           <label style="grid-column:1/-1;display:flex;gap:8px;align-items:center;font-size:12px">
             <input type="checkbox" name="bookmarked"> Mark as bookmarked
           </label>
           <div style="grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px">
             <button type="button" id="placeCancel" style="padding:8px 12px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer">Cancel</button>
-            <button type="submit" style="padding:8px 12px;border-radius:8px;border:none;background:var(--ink);color:#fff;cursor:pointer">Save</button>
+            <button type="submit" id="placeSubmit" style="padding:8px 12px;border-radius:8px;border:none;background:var(--ink);color:#fff;cursor:pointer">Auto Add</button>
           </div>
         </form>
+        <p style="font-size:11px;color:#777;margin-top:8px">Auto-fill uses best-effort extraction from the Google Maps URL and OpenStreetMap lookup for metadata.</p>
       </div>`;
     document.body.appendChild(modal);
     modal.addEventListener('click', (event) => {
@@ -2507,32 +2499,107 @@ showTab = function(id) {
     const form = document.getElementById('placeForm');
     form.reset();
     form.elements.type.value = type;
+    setStatus('');
     modal.style.display = 'flex';
   }
 
-  function onSubmitPlace(event) {
+  function setStatus(message, error) {
+    const el = document.getElementById('placeStatus');
+    if (!el) return;
+    el.textContent = message || '';
+    el.style.color = error ? '#c62828' : '#666';
+  }
+
+  function extractGoogleMapsName(url) {
+    try {
+      const parsed = new URL(url);
+      const placeMatch = parsed.pathname.match(/\/place\/([^/]+)/i);
+      if (placeMatch && placeMatch[1]) return decodeURIComponent(placeMatch[1]).replace(/\+/g, ' ').trim();
+      const q = parsed.searchParams.get('q') || parsed.searchParams.get('query');
+      if (q) return q.trim();
+      return '';
+    } catch (err) {
+      return '';
+    }
+  }
+
+  async function lookupPlace(query) {
+    const endpoint = `https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=1&q=${encodeURIComponent(query)}`;
+    const response = await fetch(endpoint, { headers: { Accept: 'application/json' } });
+    if (!response.ok) throw new Error('Lookup failed');
+    const rows = await response.json();
+    return Array.isArray(rows) && rows[0] ? rows[0] : null;
+  }
+
+  function toPlaceType(type, sourceText, match, mapUrl, note, bookmarked, bestDay, bestTime) {
+    const addr = (match && match.address) || {};
+    const name = (match && (match.name || String(match.display_name || '').split(',')[0])) || sourceText;
+    const city = addr.city || addr.town || addr.village || addr.county || '';
+    const area = addr.suburb || addr.neighbourhood || addr.borough || addr.state_district || '';
+    const cat = type === 'photos' ? 'Photo Spot' : (match && match.type ? match.type.replace(/_/g, ' ') : '');
+    const url = mapUrl || (match ? `https://www.openstreetmap.org/?mlat=${match.lat}&mlon=${match.lon}&zoom=17` : '');
+    const autoNote = note || `Auto-added from ${mapUrl ? 'Google Maps link' : 'name search'}${match ? ' with map lookup.' : '.'}`;
+    return {
+      name,
+      city,
+      area,
+      cat,
+      rating: '',
+      price: '',
+      mapUrl: url,
+      bestDay: bestDay || '',
+      bestTime: bestTime || '',
+      note: autoNote,
+      bookmarked: !!bookmarked
+    };
+  }
+
+  async function onSubmitPlace(event) {
     event.preventDefault();
     const form = event.target;
-    const place = {
-      name: form.elements.name.value.trim(),
-      city: form.elements.city.value.trim(),
-      area: form.elements.area.value.trim(),
-      cat: form.elements.cat.value.trim(),
-      rating: form.elements.rating.value.trim(),
-      price: form.elements.price.value.trim(),
-      mapUrl: form.elements.mapUrl.value.trim(),
-      bestDay: form.elements.bestDay.value.trim(),
-      bestTime: form.elements.bestTime.value.trim(),
-      note: form.elements.note.value.trim(),
-      bookmarked: form.elements.bookmarked.checked
-    };
+    const rawQuery = form.elements.query.value.trim();
     const type = form.elements.type.value;
-    if (!place.name || !SECTION_CONFIG[type]) return;
+    if (!rawQuery || !SECTION_CONFIG[type]) return;
+
+    const submit = document.getElementById('placeSubmit');
+    submit.disabled = true;
+    submit.style.opacity = '0.7';
+    setStatus('Looking up place info...');
+
+    const isUrl = /^https?:\/\//i.test(rawQuery);
+    const sourceText = isUrl ? extractGoogleMapsName(rawQuery) : rawQuery;
+    let match = null;
+    try {
+      if (sourceText) match = await lookupPlace(sourceText);
+    } catch (err) {
+      setStatus('Could not reach lookup service; added with minimal info.', false);
+    }
+
+    const place = toPlaceType(
+      type,
+      sourceText || rawQuery,
+      match,
+      isUrl ? rawQuery : '',
+      form.elements.note.value.trim(),
+      form.elements.bookmarked.checked,
+      form.elements.bestDay.value.trim(),
+      form.elements.bestTime.value.trim()
+    );
+
+    if (!place.name) {
+      setStatus('Could not determine a place name from your input.', true);
+      submit.disabled = false;
+      submit.style.opacity = '1';
+      return;
+    }
+
     state.custom[type].push(place);
     saveCustom();
     computeMerged();
     renderSection(type);
     document.getElementById('placeModal').style.display = 'none';
+    submit.disabled = false;
+    submit.style.opacity = '1';
   }
 
   function downloadCustom(type) {
@@ -2554,6 +2621,7 @@ showTab = function(id) {
       if (id === 'restaurants') renderSection('restaurants');
       if (id === 'coffee') renderSection('cafes');
       if (id === 'shops') renderSection('shops');
+      if (id === 'photos') renderSection('photos');
     };
   }
 
@@ -2565,6 +2633,7 @@ showTab = function(id) {
       state.base.restaurants = Array.isArray(fileData.restaurants) ? fileData.restaurants : [];
       state.base.cafes = Array.isArray(fileData.cafes) ? fileData.cafes : [];
       state.base.shops = Array.isArray(fileData.shops) ? fileData.shops : [];
+      state.base.photos = Array.isArray(fileData.photos) ? fileData.photos : [];
     } catch (err) {
       console.warn('Using empty place data because places.json could not be loaded.', err);
     }
